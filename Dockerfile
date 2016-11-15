@@ -23,14 +23,10 @@ WORKDIR /usr/local/src/perl-modules
 RUN svn co https://svn.mpl.ird.fr/us191/oceano/trunk/lib/perl/Oceano/
 RUN cd Oceano && perl Makefile.PL && make && make install
 VOLUME /data
-# PERL5LIB
-ENV PERL5LIB="/usr/local/lib/perl5/site_perl/5.24.0/lib/perl5:\
-/usr/local/lib/perl5/site_perl/5.24.0/lib/perl5/x86_64-linux"
-#ENV PERL5LIB="/usr/local/lib/perl5/site_perl/5.24.0/x86_64-linux:\
-#/usr/local/lib/perl5/site_perl/5.24.0:\
-#/usr/local/lib/perl5/5.24.0/x86_64-linux:\
-#/usr/local/lib/perl5/5.24.0"
-
+RUN groupadd -r scientifiques && useradd -r -g scientifiques science 
+USER science
+WORKDIR /home/science
 ENV CRUISE LAPEROUSE
 ENV DRIVE /data/campagnes
-COPY .bashrc /root
+#COPY .bashrc /root
+COPY .bashrc /home/science
